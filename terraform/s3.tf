@@ -81,3 +81,7 @@ resource "aws_iam_instance_profile" "s3_access_profile" {
 output "s3_bucket_name" {
   value = aws_s3_bucket.video_output.bucket
 }
+
+output "s3_bucket_arn" {
+  value = aws_s3_bucket.video_output.arn
+}

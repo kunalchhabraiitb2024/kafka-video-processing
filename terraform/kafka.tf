@@ -1,8 +1,9 @@
-# Simple Kafka on EC2 instead of MSK (FREE TIER)
+# Kafka on EC2 with t3.medium for better memory
 resource "aws_instance" "kafka" {
   ami           = data.aws_ami.amazon_linux.id
-  instance_type = var.instance_type  # t2.micro for free tier
+  instance_type = var.kafka_instance_type  # t3.medium for Kafka memory requirements
   key_name      = aws_key_pair.main.key_name
+  iam_instance_profile = aws_iam_instance_profile.s3_access_profile.name
   
   vpc_security_group_ids      = [aws_security_group.kafka.id]
   subnet_id                   = aws_subnet.public[0].id

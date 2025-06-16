@@ -12,11 +12,11 @@ RED='\033[0;31m'
 NC='\033[0m'
 
 # Configuration
-RTSP_IP="54.172.95.48"
-KAFKA_IP="34.207.77.179" 
-K8S_IP="54.80.24.67"
-S3_BUCKET="optifye-video-pipeline-output-9efa2ef2"
-SSH_OPTS="-i ~/.ssh/optifye-key.pem -o StrictHostKeyChecking=no -o ConnectTimeout=30"
+RTSP_IP="23.20.26.169"
+KAFKA_IP="54.175.40.116" 
+K8S_IP="54.80.57.164"
+S3_BUCKET="optifye-video-output-o35wbr8c"
+SSH_OPTS="-i ~/.ssh/optifye-key -o StrictHostKeyChecking=no -o ConnectTimeout=30"
 
 echo -e "${BLUE}OptifYe Enhanced Pipeline Deployment${NC}"
 echo -e "${BLUE}====================================${NC}"
@@ -70,57 +70,13 @@ run_cmd $RTSP_IP "RTSP" '
     sudo yum install -y python3-pip
     pip3 install opencv-python-headless --user
     
-    # Create looping video script
-    cat > loop_video.py << "EOF"
-import cv2
-import time
-import os
-
-def create_looping_video():
-    input_file = "demo.mp4"
-    output_file = "loop_video.mp4"
+    # Skip video processing - use demo.mp4 directly
+    echo "Using demo.mp4 directly for RTSP streaming..."
     
-    if not os.path.exists(input_file):
-        print(f"Input file {input_file} not found")
-        return
-    
-    # Read original video
-    cap = cv2.VideoCapture(input_file)
-    fps = cap.get(cv2.CAP_PROP_FPS)
-    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    
-    # Create output video (loop 5 times)
-    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-    out = cv2.VideoWriter(output_file, fourcc, fps, (width, height))
-    
-    frames = []
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
-        frames.append(frame)
-    
-    cap.release()
-    
-    # Write frames multiple times
-    for loop in range(5):
-        for frame in frames:
-            out.write(frame)
-    
-    out.release()
-    print(f"Created looping video: {output_file}")
-
-if __name__ == "__main__":
-    create_looping_video()
-EOF
-    
-    python3 loop_video.py
-    
-    # Start RTSP server with looping video
+    # Start RTSP server with demo video directly
     sudo docker run -d --name rtsp-server \
         -p 8554:8554 \
-        -v ~/loop_video.mp4:/media/video.mp4 \
+        -v ~/demo.mp4:/media/video.mp4 \
         --restart unless-stopped \
         bluenviron/mediamtx
     

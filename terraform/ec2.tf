@@ -8,12 +8,31 @@ resource "aws_instance" "rtsp_server" {
   
   associate_public_ip_address = true
 
-  user_data = base64encode(templatefile("${path.module}/user_data.sh", {
+  user_data = base64encode(templatefile("${path.module}/rtsp_user_data.sh", {
     s3_bucket = aws_s3_bucket.video_output.bucket
   }))
 
   tags = merge(local.common_tags, {
     Name = "${local.name}-rtsp-server"
+  })
+}
+
+# EC2 instance for K8s/Inference service (t3.medium for K8s requirements)
+resource "aws_instance" "k8s" {
+  ami                    = data.aws_ami.amazon_linux.id
+  instance_type          = var.k8s_instance_type  # t3.medium for K8s
+  subnet_id              = aws_subnet.public[0].id
+  vpc_security_group_ids = [aws_security_group.k8s_sg.id]
+  key_name               = aws_key_pair.main.key_name
+  
+  associate_public_ip_address = true
+
+  user_data = base64encode(templatefile("${path.module}/k8s_node_user_data.sh", {
+    s3_bucket = aws_s3_bucket.video_output.bucket
+  }))
+
+  tags = merge(local.common_tags, {
+    Name = "${local.name}-k8s-node"
   })
 }
 

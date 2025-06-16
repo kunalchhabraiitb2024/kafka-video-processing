@@ -17,7 +17,7 @@ class OptifYeExtractor:
     def __init__(self, source_type="file", source_path="video.mp4", rtsp_url=None):
         # Configuration
         self.kafka_topic = "video-stream-1"
-        self.kafka_servers = ["localhost:9092"]
+        self.kafka_servers = ["10.0.1.37:9092"]
         self.batch_size = 25
         self.frame_width = 320
         self.frame_height = 240
@@ -26,7 +26,7 @@ class OptifYeExtractor:
         # Source configuration
         self.source_type = source_type
         self.source_path = source_path
-        self.rtsp_url = rtsp_url or "rtsp://54.172.95.48:8554/video"
+        self.rtsp_url = rtsp_url or "rtsp://23.20.26.169:8554/video"
         
         # State
         self.batch = []
@@ -270,7 +270,7 @@ def main():
                        help="Source type: file or rtsp")
     parser.add_argument("--file", default="video.mp4",
                        help="Video file path (for file source)")
-    parser.add_argument("--rtsp", default="rtsp://54.172.95.48:8554/video",
+    parser.add_argument("--rtsp", default="rtsp://23.20.26.169:8554/video",
                        help="RTSP URL (for rtsp source)")
     parser.add_argument("--duration", type=int,
                        help="Duration in seconds (default: unlimited)")

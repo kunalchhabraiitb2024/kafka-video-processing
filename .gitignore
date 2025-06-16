@@ -3,6 +3,7 @@
 *.tfstate.*
 .terraform/
 .terraform.lock.hcl
+terraform.tfvars
 
 # Python
 __pycache__/
@@ -10,6 +11,21 @@ __pycache__/
 *$py.class
 *.so
 .Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 env/
 venv/
 .venv/
@@ -24,6 +40,9 @@ pip-delete-this-directory.txt
 
 # Logs
 *.log
+consumer*.log
+extractor*.log
+nohup.out
 
 # OS
 .DS_Store
@@ -39,3 +58,9 @@ Thumbs.db
 # Local testing
 test_output/
 local_videos/
+results/
+output/
+
+# Temporary files
+*.tmp
+*.temp

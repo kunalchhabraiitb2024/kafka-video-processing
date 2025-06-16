@@ -21,9 +21,9 @@ class OptifYeConsumer:
     def __init__(self):
         # Configuration
         self.kafka_topic = "video-stream-1"
-        self.kafka_servers = ["localhost:9092"]
-        self.inference_url = "http://54.80.24.67:8080/infer"
-        self.s3_bucket = "optifye-video-pipeline-output-9efa2ef2"
+        self.kafka_servers = ["10.0.1.37:9092"]
+        self.inference_url = "http://52.201.251.231:8080/infer"
+        self.s3_bucket = "optifye-video-output-o35wbr8c"
         self.s3_region = "us-east-1"
         
         # Initialize services
