@@ -4,12 +4,12 @@ resource "aws_security_group" "rtsp_sg" {
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    from_port   = 554
-    to_port     = 554
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "RTSP"
-  }
+  from_port   = 8554  # Changed from 554
+  to_port     = 8554  # Changed from 554
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+  description = "RTSP"
+  } 
 
   ingress {
     from_port   = 22
@@ -63,6 +63,8 @@ resource "aws_security_group" "kafka_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+[ec2-user@ip-10-0-1-75 ~]$ sudo docker network create kafka-net --driver bridge || true
+Error response from daemon: network with name kafka-net already exists
 
 resource "aws_security_group" "k8s_sg" {
   name        = "k8s-sg"
@@ -70,11 +72,11 @@ resource "aws_security_group" "k8s_sg" {
   vpc_id      = aws_vpc.main.id
 
   ingress {
-    from_port   = 5000
-    to_port     = 5000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "Inference API"
+  from_port   = 8080  # Changed from 5000
+  to_port     = 8080  # Changed from 5000
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]  
+  description = "Inference API"
   }
 
   ingress {
